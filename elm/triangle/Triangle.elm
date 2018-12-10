@@ -18,9 +18,13 @@ triangleKind x y z =
     |> Debug.log "current list"
     |> checkTriangle
 
-checkSides n =
-    if n <= 0 then Err "Invalid lengths"
-    else Ok n
+checkSides side =
+    case side of
+        Ok n -> 
+            if n <= 0 then Err "Invalid lengths"
+            else Ok n
+        Err _ ->
+            side
 
 checkValidTriangle list =
     case list of
