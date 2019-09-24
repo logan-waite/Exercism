@@ -1,13 +1,12 @@
-
-export function hey (message) {
-  const fMessage = message.trim()
-  if (nothingSaid(fMessage)) {
+export function hey (inMessage) {
+  const message = inMessage.trim()
+  if (nothingSaid(message)) {
     return "Fine. Be that way!"
-  } else if (isQuestion(fMessage) && isYelling(fMessage)) {
+  } else if (isQuestion(message) && isYelling(message)) {
     return "Calm down, I know what I'm doing!"
-  } else if (isQuestion(fMessage)) {
+  } else if (isQuestion(message)) {
     return "Sure."
-  } else if (isYelling(fMessage)) {
+  } else if (isYelling(message)) {
     return "Whoa, chill out!"
   } else {
     return "Whatever."
@@ -20,8 +19,7 @@ function isQuestion (message) {
 }
 
 function isYelling (message) {
-  const strippedMessage = message.replace(/([^A-Za-z]+)/g, '')
-  return !nothingSaid(strippedMessage) && strippedMessage === strippedMessage.toUpperCase()
+  return message.match(/[A-Za-z]/) && message === message.toUpperCase()
 }
 
 function nothingSaid (message) {
