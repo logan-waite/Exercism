@@ -26,10 +26,14 @@ isQuestion remark =
 
 isYelling : String -> Bool
 isYelling remark =
-    if String.filter Char.isAlpha remark |> String.isEmpty then
+    let
+        alphaString =
+            String.filter Char.isAlpha remark
+    in
+    if String.isEmpty alphaString then
         False
 
-    else if String.filter Char.isAlpha remark |> String.all Char.isUpper then
+    else if String.all Char.isUpper alphaString then
         True
 
     else

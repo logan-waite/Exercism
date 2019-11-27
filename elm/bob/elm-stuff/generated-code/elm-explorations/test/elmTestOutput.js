@@ -20,6 +20,15 @@ var location = {
 };
 var document = { body: {}, createTextNode: function() {}, location: location };
 
+if (typeof FileList === "undefined") {
+    FileList = function() {};
+}
+
+if (typeof File === "undefined") {
+    File = function() {};
+}
+
+
 if (typeof XMLHttpRequest === "undefined") {
   XMLHttpRequest = function() {
     return {
@@ -3427,82 +3436,80 @@ var author$project$Test$Runner$Node$Vendor$Diff$UnexpectedPath = F2(
 	function (a, b) {
 		return {$: 'UnexpectedPath', a: a, b: b};
 	});
-var elm$core$Result$andThen = F2(
-	function (callback, result) {
-		if (result.$ === 'Ok') {
-			var value = result.a;
-			return callback(value);
-		} else {
-			var msg = result.a;
-			return elm$core$Result$Err(msg);
-		}
-	});
 var author$project$Test$Runner$Node$Vendor$Diff$makeChangesHelp = F5(
 	function (changes, getA, getB, _n0, path) {
-		var x = _n0.a;
-		var y = _n0.b;
-		if (!path.b) {
-			return elm$core$Result$Ok(changes);
-		} else {
-			var _n2 = path.a;
-			var prevX = _n2.a;
-			var prevY = _n2.b;
-			var tail = path.b;
-			var change = function () {
-				if (_Utils_eq(x - 1, prevX) && _Utils_eq(y - 1, prevY)) {
-					var _n3 = getA(x);
-					if (_n3.$ === 'Just') {
-						var a = _n3.a;
-						return elm$core$Result$Ok(
-							author$project$Test$Runner$Node$Vendor$Diff$NoChange(a));
-					} else {
-						return elm$core$Result$Err(
-							author$project$Test$Runner$Node$Vendor$Diff$CannotGetA(x));
-					}
-				} else {
-					if (_Utils_eq(x, prevX)) {
-						var _n4 = getB(y);
+		makeChangesHelp:
+		while (true) {
+			var x = _n0.a;
+			var y = _n0.b;
+			if (!path.b) {
+				return elm$core$Result$Ok(changes);
+			} else {
+				var _n2 = path.a;
+				var prevX = _n2.a;
+				var prevY = _n2.b;
+				var tail = path.b;
+				var change = function () {
+					if (_Utils_eq(x - 1, prevX) && _Utils_eq(y - 1, prevY)) {
+						var _n4 = getA(x);
 						if (_n4.$ === 'Just') {
-							var b = _n4.a;
+							var a = _n4.a;
 							return elm$core$Result$Ok(
-								author$project$Test$Runner$Node$Vendor$Diff$Added(b));
+								author$project$Test$Runner$Node$Vendor$Diff$NoChange(a));
 						} else {
 							return elm$core$Result$Err(
-								author$project$Test$Runner$Node$Vendor$Diff$CannotGetB(y));
+								author$project$Test$Runner$Node$Vendor$Diff$CannotGetA(x));
 						}
 					} else {
-						if (_Utils_eq(y, prevY)) {
-							var _n5 = getA(x);
+						if (_Utils_eq(x, prevX)) {
+							var _n5 = getB(y);
 							if (_n5.$ === 'Just') {
-								var a = _n5.a;
+								var b = _n5.a;
 								return elm$core$Result$Ok(
-									author$project$Test$Runner$Node$Vendor$Diff$Removed(a));
+									author$project$Test$Runner$Node$Vendor$Diff$Added(b));
 							} else {
 								return elm$core$Result$Err(
-									author$project$Test$Runner$Node$Vendor$Diff$CannotGetA(x));
+									author$project$Test$Runner$Node$Vendor$Diff$CannotGetB(y));
 							}
 						} else {
-							return elm$core$Result$Err(
-								A2(
-									author$project$Test$Runner$Node$Vendor$Diff$UnexpectedPath,
-									_Utils_Tuple2(x, y),
-									path));
+							if (_Utils_eq(y, prevY)) {
+								var _n6 = getA(x);
+								if (_n6.$ === 'Just') {
+									var a = _n6.a;
+									return elm$core$Result$Ok(
+										author$project$Test$Runner$Node$Vendor$Diff$Removed(a));
+								} else {
+									return elm$core$Result$Err(
+										author$project$Test$Runner$Node$Vendor$Diff$CannotGetA(x));
+								}
+							} else {
+								return elm$core$Result$Err(
+									A2(
+										author$project$Test$Runner$Node$Vendor$Diff$UnexpectedPath,
+										_Utils_Tuple2(x, y),
+										path));
+							}
 						}
 					}
+				}();
+				if (change.$ === 'Err') {
+					var err = change.a;
+					return elm$core$Result$Err(err);
+				} else {
+					var c = change.a;
+					var $temp$changes = A2(elm$core$List$cons, c, changes),
+						$temp$getA = getA,
+						$temp$getB = getB,
+						$temp$_n0 = _Utils_Tuple2(prevX, prevY),
+						$temp$path = tail;
+					changes = $temp$changes;
+					getA = $temp$getA;
+					getB = $temp$getB;
+					_n0 = $temp$_n0;
+					path = $temp$path;
+					continue makeChangesHelp;
 				}
-			}();
-			return A2(
-				elm$core$Result$andThen,
-				function (c) {
-					return A5(
-						author$project$Test$Runner$Node$Vendor$Diff$makeChangesHelp,
-						A2(elm$core$List$cons, c, changes),
-						getA,
-						getB,
-						_Utils_Tuple2(prevX, prevY),
-						tail);
-				},
-				change);
+			}
 		}
 	});
 var author$project$Test$Runner$Node$Vendor$Diff$makeChanges = F3(
@@ -3911,10 +3918,48 @@ var author$project$Test$Reporter$Highlightable$map = F2(
 				transform(val));
 		}
 	});
+var author$project$Test$Reporter$Highlightable$resolve = F2(
+	function (_n0, highlightable) {
+		var fromHighlighted = _n0.fromHighlighted;
+		var fromPlain = _n0.fromPlain;
+		if (highlightable.$ === 'Highlighted') {
+			var val = highlightable.a;
+			return fromHighlighted(val);
+		} else {
+			var val = highlightable.a;
+			return fromPlain(val);
+		}
+	});
+var elm$core$Basics$neq = _Utils_notEqual;
+var elm$core$List$drop = F2(
+	function (n, list) {
+		drop:
+		while (true) {
+			if (n <= 0) {
+				return list;
+			} else {
+				if (!list.b) {
+					return list;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs;
+					n = $temp$n;
+					list = $temp$list;
+					continue drop;
+				}
+			}
+		}
+	});
 var elm$core$String$foldr = _String_foldr;
 var elm$core$String$toList = function (string) {
 	return A3(elm$core$String$foldr, elm$core$List$cons, _List_Nil, string);
 };
+var elm$core$Tuple$pair = F2(
+	function (a, b) {
+		return _Utils_Tuple2(a, b);
+	});
 var author$project$Test$Reporter$Console$Format$highlightEqual = F2(
 	function (expected, actual) {
 		if ((expected === '\"\"') || (actual === '\"\"')) {
@@ -3923,18 +3968,48 @@ var author$project$Test$Reporter$Console$Format$highlightEqual = F2(
 			if (author$project$Test$Reporter$Console$Format$isFloat(expected) && author$project$Test$Reporter$Console$Format$isFloat(actual)) {
 				return elm$core$Maybe$Nothing;
 			} else {
+				var isHighlighted = author$project$Test$Reporter$Highlightable$resolve(
+					{
+						fromHighlighted: elm$core$Basics$always(true),
+						fromPlain: elm$core$Basics$always(false)
+					});
 				var expectedChars = elm$core$String$toList(expected);
+				var edgeCount = function (highlightedString) {
+					var highlights = A2(elm$core$List$map, isHighlighted, highlightedString);
+					return elm$core$List$length(
+						A2(
+							elm$core$List$filter,
+							function (_n0) {
+								var lhs = _n0.a;
+								var rhs = _n0.b;
+								return !_Utils_eq(lhs, rhs);
+							},
+							A3(
+								elm$core$List$map2,
+								elm$core$Tuple$pair,
+								A2(elm$core$List$drop, 1, highlights),
+								highlights)));
+				};
 				var actualChars = elm$core$String$toList(actual);
-				return elm$core$Maybe$Just(
-					_Utils_Tuple2(
-						A2(
-							elm$core$List$map,
-							author$project$Test$Reporter$Highlightable$map(elm$core$String$fromChar),
-							A2(author$project$Test$Reporter$Highlightable$diffLists, expectedChars, actualChars)),
-						A2(
-							elm$core$List$map,
-							author$project$Test$Reporter$Highlightable$map(elm$core$String$fromChar),
-							A2(author$project$Test$Reporter$Highlightable$diffLists, actualChars, expectedChars))));
+				var highlightedActual = A2(
+					elm$core$List$map,
+					author$project$Test$Reporter$Highlightable$map(elm$core$String$fromChar),
+					A2(author$project$Test$Reporter$Highlightable$diffLists, actualChars, expectedChars));
+				var highlightedExpected = A2(
+					elm$core$List$map,
+					author$project$Test$Reporter$Highlightable$map(elm$core$String$fromChar),
+					A2(author$project$Test$Reporter$Highlightable$diffLists, expectedChars, actualChars));
+				var plainCharCount = elm$core$List$length(
+					A2(
+						elm$core$List$filter,
+						A2(elm$core$Basics$composeL, elm$core$Basics$not, isHighlighted),
+						highlightedExpected));
+				return ((_Utils_cmp(
+					edgeCount(highlightedActual),
+					plainCharCount) > 0) || (_Utils_cmp(
+					edgeCount(highlightedExpected),
+					plainCharCount) > 0)) ? elm$core$Maybe$Nothing : elm$core$Maybe$Just(
+					_Utils_Tuple2(highlightedExpected, highlightedActual));
 			}
 		}
 	});
@@ -4099,18 +4174,6 @@ var author$project$Test$Reporter$Console$Format$format = F3(
 							extraStr,
 							missingStr
 						]));
-		}
-	});
-var author$project$Test$Reporter$Highlightable$resolve = F2(
-	function (_n0, highlightable) {
-		var fromHighlighted = _n0.fromHighlighted;
-		var fromPlain = _n0.fromPlain;
-		if (highlightable.$ === 'Highlighted') {
-			var val = highlightable.a;
-			return fromHighlighted(val);
-		} else {
-			var val = highlightable.a;
-			return fromPlain(val);
 		}
 	});
 var elm$core$Basics$identity = function (x) {
@@ -6048,17 +6111,10 @@ var elm$core$String$endsWith = _String_endsWith;
 var author$project$Bob$isQuestion = function (remark) {
 	return A2(elm$core$String$endsWith, '?', remark);
 };
-var elm$core$Debug$log = _Debug_log;
 var elm$core$String$filter = _String_filter;
 var author$project$Bob$isYelling = function (remark) {
-	return elm$core$String$isEmpty(
-		A2(
-			elm$core$Debug$log,
-			'is alpha',
-			A2(elm$core$String$filter, elm$core$Char$isAlpha, remark))) ? false : (A2(
-		elm$core$String$all,
-		elm$core$Char$isUpper,
-		A2(elm$core$String$filter, elm$core$Char$isAlpha, remark)) ? true : false);
+	var alphaString = A2(elm$core$String$filter, elm$core$Char$isAlpha, remark);
+	return elm$core$String$isEmpty(alphaString) ? false : (A2(elm$core$String$all, elm$core$Char$isUpper, alphaString) ? true : false);
 };
 var author$project$Bob$hey = function (remark) {
 	return author$project$Bob$isEmpty(remark) ? 'Fine. Be that way!' : ((author$project$Bob$isQuestion(remark) && author$project$Bob$isYelling(remark)) ? 'Calm down, I know what I\'m doing!' : (author$project$Bob$isQuestion(remark) ? 'Sure.' : (author$project$Bob$isYelling(remark) ? 'Whoa, chill out!' : 'Whatever.')));
@@ -6198,6 +6254,16 @@ var elm_explorations$test$Test$Internal$Batch = function (a) {
 var elm_explorations$test$Test$Internal$Labeled = F2(
 	function (a, b) {
 		return {$: 'Labeled', a: a, b: b};
+	});
+var elm$core$Result$andThen = F2(
+	function (callback, result) {
+		if (result.$ === 'Ok') {
+			var value = result.a;
+			return callback(value);
+		} else {
+			var msg = result.a;
+			return elm$core$Result$Err(msg);
+		}
 	});
 var elm$core$Set$Set_elm_builtin = function (a) {
 	return {$: 'Set_elm_builtin', a: a};
@@ -6538,15 +6604,15 @@ var elm_explorations$test$Test$concat = function (tests) {
 		}
 	}
 };
-var author$project$Test$Generated$Main2524855782$main = A2(
+var author$project$Test$Generated$Main355154339$main = A2(
 	author$project$Test$Runner$Node$run,
 	{
 		paths: _List_fromArray(
-			['/Users/logan/Exercism/elm/bob/tests/Tests.elm']),
-		processes: 4,
+			['/Users/loganw/Exercism/elm/bob/tests/Tests.elm']),
+		processes: 16,
 		report: author$project$Test$Reporter$Reporter$ConsoleReport(author$project$Console$Text$UseColor),
 		runs: elm$core$Maybe$Nothing,
-		seed: 246872639051689
+		seed: 253487388711237
 	},
 	elm_explorations$test$Test$concat(
 		_List_fromArray(
@@ -6557,10 +6623,10 @@ var author$project$Test$Generated$Main2524855782$main = A2(
 				_List_fromArray(
 					[author$project$Tests$tests]))
 			])));
-_Platform_export({'Test':{'Generated':{'Main2524855782':{'init':author$project$Test$Generated$Main2524855782$main(elm$json$Json$Decode$int)(0)}}}});}(this));
+_Platform_export({'Test':{'Generated':{'Main355154339':{'init':author$project$Test$Generated$Main355154339$main(elm$json$Json$Decode$int)(0)}}}});}(this));
 return this.Elm;
 })({});
-var pipeFilename = "/tmp/elm_test-58863.sock";
+var pipeFilename = "/tmp/elm_test-15184.sock";
 // Make sure necessary things are defined.
 if (typeof Elm === "undefined") {
   throw "test runner config error: Elm is not defined. Make sure you provide a file compiled by Elm!";
