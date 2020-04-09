@@ -1,10 +1,12 @@
 module DifferenceOfSquares exposing (difference, squareOfSum, sumOfSquares)
+
 import List exposing (map, range, sum)
 
 
 square : Int -> Int
 square n =
     n ^ 2
+
 
 squareOfSum : Int -> Int
 squareOfSum n =
