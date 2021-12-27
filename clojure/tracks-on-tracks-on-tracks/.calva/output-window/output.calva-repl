@@ -1,0 +1,37 @@
+; This is the Calva evaluation results output window.
+; TIPS: The keyboard shortcut `ctrl+alt+c o` shows and focuses this window
+;   when connected to a REPL session.
+; Please see https://calva.io/output/ for more info.
+; Happy coding! ♥️
+
+; Jacking in...
+; Starting Jack-in Terminal: lein update-in :dependencies conj '[nrepl,"0.8.3"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.26.0"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS: 
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉user꞉>  ; Use `alt+enter` to evaluate
+; Jack-in done.
+clj꞉user꞉> 
+; Syntax error compiling at (tracks_on_tracks_on_tracks.clj:3:1).
+; Unable to resolve symbol: defn in this context
+clj꞉tracks-on-tracks-on-tracks꞉> 
+; Evaluating file: tracks_on_tracks_on_tracks.clj
+#'tracks-on-tracks-on-tracks/learning-list
+clj꞉tracks-on-tracks-on-tracks꞉> 
+#'tracks-on-tracks-on-tracks/new-list
+clj꞉tracks-on-tracks-on-tracks꞉> 
+#'tracks-on-tracks-on-tracks/new-list
+clj꞉tracks-on-tracks-on-tracks꞉> 
+()
+clj꞉tracks-on-tracks-on-tracks꞉> 
+#'tracks-on-tracks-on-tracks/learning-list
+clj꞉tracks-on-tracks-on-tracks꞉> 
+; Execution error (ArityException) at tracks-on-tracks-on-tracks/eval7332 (form-init2801228282085154939.clj:42).
+; Wrong number of args (1) passed to: tracks-on-tracks-on-tracks/add-language
+clj꞉tracks-on-tracks-on-tracks꞉> 
