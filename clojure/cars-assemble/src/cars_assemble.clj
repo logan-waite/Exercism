@@ -4,8 +4,8 @@
   [speed]
   (cond
     (= speed 0) 0.0
-    (contains? #{1,2,3,4} speed) 1.0
-    (contains? #{5,6,7,8} speed) 0.9
+    (contains? #{1 2 3 4} speed) 1.0
+    (contains? #{5 6 7 8} speed) 0.9
     (= speed 9) 0.8
     (= speed 10) 0.77))
 
